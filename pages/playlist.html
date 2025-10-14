@@ -1,0 +1,40 @@
+<!doctype html><html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Playlist</title><link rel="stylesheet" href="../assets/css/style.css"></head><body>
+<div class="container">
+  <nav class="nav"><div class="brand">Wedding MasterPlan</div><div><a class="btn" href="../index.html">Home</a></div></nav>
+  <section class="hero"><h1>Music Playlist</h1><p>Save Apple Music, SoundCloud, or YouTube links.</p></section>
+
+  <div class="card">
+    <input id="songTitle" placeholder="Song title">
+    <input id="songArtist" placeholder="Artist">
+    <input id="songUrl" placeholder="URL (Apple/SoundCloud/YouTube)">
+    <button class="btn primary" id="addSong">Add Song</button>
+    <hr>
+    <div id="playlist"></div>
+  </div>
+
+  <footer>© <span id="y"></span> Wedding MasterPlan</footer>
+</div>
+<script src="../js/config.js"></script><script src="../js/app.js"></script>
+<script>
+document.getElementById('y').textContent=new Date().getFullYear();
+function embed(url){
+  try{
+    if(url.includes("youtube.com")||url.includes("youtu.be")){const id=(url.split("v=")[1]||"").split("&")[0]||url.split("/").pop();return `<iframe width="320" height="180" src="https://www.youtube.com/embed/${id}" frameborder="0" allowfullscreen></iframe>`;}
+    if(url.includes("soundcloud.com")){return `<iframe width="100%" height="120" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=${encodeURIComponent(url)}"></iframe>`;}
+    if(url.includes("music.apple.com")){return `<a class="btn" href="${url}" target="_blank" rel="noopener">Play on Apple Music</a>`;}
+  }catch(_){}
+  return `<a href="${url}" target="_blank" rel="noopener">${url}</a>`;
+}
+async function load(){try{
+  const rows=await sbSelect("playlist");
+  playlist.innerHTML=rows.map(r=>`<div class="card" style="margin:8px 0"><strong>${r.title||"Untitled"}</strong> — ${r.artist||""}<br>${embed(r.url||"")}</div>`).join("");
+}catch(e){console.warn(e)}}
+addSong.addEventListener("click",async()=>{try{
+  await sbInsert("playlist",{title:songTitle.value,artist:songArtist.value,url:songUrl.value});
+  songTitle.value=songArtist.value=songUrl.value=""; load();
+}catch(e){alert("Could not save. Check RLS.");}});
+load();
+</script>
+</body></html>
