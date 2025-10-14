@@ -1,0 +1,53 @@
+<!doctype html><html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Set the Date</title>
+<link rel="stylesheet" href="../assets/css/style.css"></head><body>
+<div class="container">
+  <nav class="nav">
+    <div class="brand">Wedding MasterPlan</div>
+    <div><a class="btn" href="../index.html">Home</a></div>
+  </nav>
+
+  <section class="hero"><h1>Set the Date</h1><p>Season, month, day, and time of day.</p></section>
+
+  <div class="grid">
+    <div class="card">
+      <h3>Season</h3>
+      <div class="gallery">
+        <div class="tile" style="background-image:url('../assets/img/decor/reception.jpg')"></div>
+        <!-- add seasonal images if you like -->
+      </div>
+      <p><label><input type="radio" name="season"> Spring</label> &nbsp;
+         <label><input type="radio" name="season"> Summer</label> &nbsp;
+         <label><input type="radio" name="season"> Fall</label> &nbsp;
+         <label><input type="radio" name="season"> Winter</label></p>
+    </div>
+
+    <div class="card">
+      <h3>Month</h3>
+      <p>
+        <select id="month">
+          <option>January</option><option>February</option><option>March</option>
+          <option>April</option><option>May</option><option>June</option>
+          <option>July</option><option>August</option><option>September</option>
+          <option>October</option><option>November</option><option>December</option>
+        </select>
+      </p>
+      <h3>Day of Week</h3>
+      <p>
+        <select id="weekday"><option>Sunday</option><option>Monday</option><option>Tuesday</option>
+        <option>Wednesday</option><option>Thursday</option><option>Friday</option><option>Saturday</option></select>
+      </p>
+      <h3>Time of Day</h3>
+      <p>
+        <label><input type="radio" name="time"> Morning</label> &nbsp;
+        <label><input type="radio" name="time"> Afternoon</label> &nbsp;
+        <label><input type="radio" name="time"> Evening</label>
+      </p>
+    </div>
+  </div>
+
+  <footer>© <span id="y"></span> Wedding MasterPlan</footer>
+</div>
+<script src="../js/config.js"></script><script src="../js/app.js"></script>
+</body></html>
