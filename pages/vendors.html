@@ -1,0 +1,52 @@
+<!doctype html><html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vendors</title><link rel="stylesheet" href="../assets/css/style.css"></head><body>
+<div class="container">
+  <nav class="nav"><div class="brand">Wedding MasterPlan</div><div><a class="btn" href="../index.html">Home</a></div></nav>
+  <section class="hero"><h1>Vendors</h1><p>Keep all contact details here. Paste contract text for AI summary.</p></section>
+
+  <div class="grid">
+    <div class="card">
+      <h3>Add Vendor</h3>
+      <input id="vName" placeholder="Name">
+      <input id="vRole" placeholder="Role (Photographer, DJ...)">
+      <input id="vPhone" placeholder="Phone">
+      <input id="vEmail" placeholder="Email">
+      <button class="btn primary" id="vAdd">Save Vendor</button>
+      <hr>
+      <table><thead><tr><th>Name</th><th>Role</th><th>Phone</th><th>Email</th></tr></thead><tbody id="vRows"></tbody></table>
+    </div>
+
+    <div class="card">
+      <h3>AI Contract Summary</h3>
+      <textarea id="contractIn" rows="6" placeholder="Paste vendor contract text"></textarea>
+      <button class="btn primary" id="contractBtn">Summarize</button>
+      <blockquote id="contractOut" style="margin-top:8px">—</blockquote>
+    </div>
+  </div>
+
+  <footer>© <span id="y"></span> Wedding MasterPlan</footer>
+</div>
+<script src="../js/config.js"></script><script src="../js/app.js"></script>
+<script>
+document.getElementById('y').textContent=new Date().getFullYear();
+
+async function loadVendors(){try{
+  const rows = await sbSelect("vendors");
+  vRows.innerHTML = rows.map(r=>`<tr><td>${r.name}</td><td>${r.role||""}</td><td>${r.phone||""}</td><td>${r.email||""}</td></tr>`).join("");
+}catch(e){console.warn(e)}}
+
+vAdd.addEventListener("click", async ()=>{
+  try{await sbInsert("vendors",{name:vName.value,role:vRole.value,phone:vPhone.value,email:vEmail.value});
+      vName.value=vRole.value=vPhone.value=vEmail.value=""; loadVendors();}
+  catch(e){alert("Could not save vendor. Check RLS.");}
+});
+
+contractBtn.addEventListener("click", async ()=>{
+  contractOut.textContent="Working...";
+  const j = await aiCall(window.APP_CONFIG.aiContractUrl, contractIn.value || "Summarize key vendor contract terms");
+  contractOut.textContent = j?.data || "No response.";
+});
+loadVendors();
+</script>
+</body></html>
